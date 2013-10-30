@@ -12,6 +12,8 @@
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < 70000
 
 #import <objc/runtime.h>
+#import <float.h>
+
 #define fequalzero(a) (fabs(a) < FLT_EPSILON)
 
 NS_INLINE void swizzle(Class c, SEL orig, SEL new) {
