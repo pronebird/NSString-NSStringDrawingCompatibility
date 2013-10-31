@@ -7,9 +7,9 @@
 //  Copyright (c) 2013 Andrej Mihajlov. All rights reserved.
 //
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < 70000
-
 #import <Foundation/Foundation.h>
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 70000
 
 // use protocols to avoid warnings on dynamic methods
 @protocol NSStringDrawingCompatibility <NSObject>
