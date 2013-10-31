@@ -1,5 +1,4 @@
-NSString+NSStringDrawingCompatibility
-=====================================
+### NSString+NSStringDrawingCompatibility
 
 This category introduces some of new iOS 7 text drawing methods to iOS 6 to keep consistent code between two iOSes.
 
