@@ -15,6 +15,7 @@
 @protocol NSStringDrawingCompatibility <NSObject>
 @optional
 - (CGSize)sizeWithAttributes:(NSDictionary *)attrs;
+- (void)drawAtPoint:(CGPoint)point withAttributes:(NSDictionary *)attrs;
 - (void)drawInRect:(CGRect)rect withAttributes:(NSDictionary *)attrs;
 @end
 

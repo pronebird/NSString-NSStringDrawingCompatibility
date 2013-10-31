@@ -34,6 +34,7 @@ NS_INLINE void swizzle(Class c, SEL orig, SEL new) {
 	dispatch_once(&onceToken, ^{
 		if(floor(NSFoundationVersionNumber) <= 993.00) { // 6.1
 			swizzle(self.class, @selector(sizeWithAttributes:), @selector(pb_sizeWithAttributes:));
+			swizzle(self.class, @selector(drawAtPoint:withAttributes:), @selector(pb_drawAtPoint:withAttributes:));
 			swizzle(self.class, @selector(drawInRect:withAttributes:), @selector(pb_drawInRect:withAttributes:));
 		}
 	});
@@ -77,6 +78,32 @@ NS_INLINE void swizzle(Class c, SEL orig, SEL new) {
 	}
 	
 	[self drawInRect:rect withFont:font lineBreakMode:lineBreakMode alignment:textAlignment];
+}
+
+- (void)pb_drawAtPoint:(CGPoint)point withAttributes:(NSDictionary *)attrs {
+	CGContextRef ctx = UIGraphicsGetCurrentContext();
+	UIFont* font = attrs[NSFontAttributeName];
+	NSParagraphStyle* paragraphStyle = attrs[NSParagraphStyleAttributeName];
+	NSLineBreakMode lineBreakMode = NSLineBreakByWordWrapping;
+	
+	if(paragraphStyle != nil) {
+		lineBreakMode = paragraphStyle.lineBreakMode;
+	}
+	
+	if(attrs[NSBackgroundColorAttributeName] != nil) {
+		CGSize size = [self sizeWithAttributes:attrs];
+		
+		CGContextSaveGState(ctx);
+		[((UIColor*)attrs[NSBackgroundColorAttributeName]) setFill];
+		UIRectFill(CGRectMake(0, 0, size.width, size.height));
+		CGContextRestoreGState(ctx);
+	}
+	
+	if(attrs[NSForegroundColorAttributeName] != nil) {
+		[((UIColor*)attrs[NSForegroundColorAttributeName]) setFill];
+	}
+	
+	[self drawAtPoint:point forWidth:CGFLOAT_MAX withFont:font lineBreakMode:lineBreakMode];
 }
 
 @end
